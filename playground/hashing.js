@@ -1,15 +1,30 @@
 const {SHA256} = require('crypto-js'),
-  jwt = require('jsonwebtoken');
+  jwt = require('jsonwebtoken'),
+  bcrypt = require('bcryptjs');
 
-var data = {
-  id: 10
-};
+var password = 'asdlkj123!';
 
-var token = jwt.sign(data, 'salt-value');
-console.log(`Token: ${token}`);
+// bcrypt.genSalt(10, (err, salt) => {
+//   bcrypt.hash(password, salt, (err, hash) => {
+//     console.log('Hash: ', hash);
+//   });
+// });
 
-var decoded = jwt.verify(token, 'salt-value');
-console.log('Decoded', decoded);
+var hashedPassword = '$2a$10$MFSbSH1xK3CLEgXvWcOnGuddY0E7YX2rqeRelYIxFzl1NHb3oOGHi';
+
+bcrypt.compare(password, hashedPassword, (err,  res) => {
+  console.log(res);
+});
+
+// var data = {
+//   id: 10
+// };
+//
+// var token = jwt.sign(data, 'salt-value');
+// console.log(`Token: ${token}`);
+//
+// var decoded = jwt.verify(token, 'salt-value');
+// console.log('Decoded', decoded);
 
 // var message = 'I am Brutelax';
 // var hash = SHA256(message).toString();
