@@ -37,7 +37,7 @@ UserSchema.methods.toJSON = function () {
   var userObject = user.toObject();
 
   return _.pick(userObject, ['_id', 'email']);
-}
+};
 
 UserSchema.methods.generateAuthToken = function () {
   var user = this;
@@ -49,7 +49,17 @@ UserSchema.methods.generateAuthToken = function () {
   return user.save().then(() => {
     return token;
   });
-}
+};
+
+UserSchema.methods.removeToken = function (token) {
+  var user = this;
+
+  return user.update({
+    $pull: {
+      tokens: {token}
+    }
+  });
+};
 
 UserSchema.statics.findByToken = function (token) {
   var User = this;
@@ -66,7 +76,7 @@ UserSchema.statics.findByToken = function (token) {
     'tokens.token': token,
     'tokens.access': 'auth'
   });
-}
+};
 
 UserSchema.statics.findByCredentials = function (email, password) {
   var User = this;
@@ -86,7 +96,7 @@ UserSchema.statics.findByCredentials = function (email, password) {
       });
     });
   });
-}
+};
 
 UserSchema.pre('save', function (next) {
   var user = this;
